@@ -1,0 +1,7 @@
+{
+  NOTE = "Automatically generated, do not edit!";
+  NSExecutable = "Notepad";
+  NSMainNibFile = "";
+  GSMainMarkupFile = "";
+  NSPrincipalClass = "NSApplication";
+}
