@@ -15,8 +15,9 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#import "AppController.h"
 #import <AppKit/AppKit.h>
+#import "AppController.h"
+#import "Document.h"
 
 @implementation AppController
 
@@ -35,25 +36,37 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 - (void) windowWillClose: (id*) sender
 {
+	NSLog(@"%@", [activeDocument getContent]);
 	[NSApp terminate: self];
 }
 
 - (void) saveDocument: (id*) sender
 {
-	if (filename != nil)
+	if (activeDocument != nil)
 	{
-		[self saveDocumentToFile: filename];	
+		[self saveActiveDocument];
+		return;
 	}
 	NSLog(@"Did tap save");
 	NSSavePanel* savePanel = [NSSavePanel savePanel];
 	[savePanel runModal];
-	NSString *name = [savePanel filename];
-	NSLog(@"Got save file %@", name);
-	[self saveDocumentToFile: name];
+	activeDocument = [[Document alloc] initWithFilename: [savePanel filename]];	
+	[activeDocument setContent: [textField text]];
+	NSLog(@"Got save file %@", [savePanel filename]);
+	[self saveActiveDocument];
 }
 
-- (void) saveDocumentToFile: (NSString* filename)
+- (void) saveActiveDocument
 {
+	[activeDocument save];	
+}
+
+// MARK: - NSTextViewDelegate
+
+-(void) textDidChange: (NSNotification*) not
+{
+	NSString* content = [textField text];
+	[activeDocument setContent: content];
 }
 
 @end

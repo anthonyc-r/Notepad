@@ -20,13 +20,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 @class NSWindow;
 @class NSTextField;
 @class NSNotification;
+@class Document;
 
 @interface AppController: NSObject
 {
+	Document* activeDocument;
+
 	id textField;
 	id menu;
 	id window;
-	NSString* filename;
 }
+
+-(void) saveActiveDocument;
 
 @end
