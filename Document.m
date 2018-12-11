@@ -24,6 +24,7 @@
 -(void) setContent: (NSString*)newContent
 {
 	[newContent retain];
+	[self->content release];
 	self->content = newContent;
 }
 
