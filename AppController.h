@@ -25,12 +25,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 @interface AppController: NSObject
 {
 	Document* activeDocument;
-
+	
+	id unsavedChangesPanel;
 	id textField;
 	id menu;
 	id window;
 }
 
--(void) saveActiveDocument;
+
+-(void)awakeFromNib;
+-(void)windowDidResize: (id)sender;
+-(void)windowWillClose: (id)sender;
+-(void)openDocument: (id)sender;
+-(void)saveDocument: (id)sender;
+-(void)textDidChange: (NSNotification*) not;
 
 @end

@@ -1,4 +1,6 @@
 [Desktop Entry]
+Encoding=UTF-8
 Type=Application
 Categories=X-GNUstep;
-Exec=/usr/local/GNUstep/System/Tools/openapp Notepad
+Exec=/usr/bin/openapp Notepad
+FilePattern=Notepad.app;Notepad;

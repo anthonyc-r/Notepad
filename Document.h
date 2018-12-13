@@ -4,12 +4,16 @@
 {
 	NSString* filename;
 	NSString* content;
+	BOOL saved;
 }
 
--(id) initWithFilename: (NSString*)aFilename;
--(NSString*) getFileName;
--(void) setContent: (NSString*)newContent;
--(NSString *) getContent;
--(void) save;
+-(id)init;
+-(id)initWithFilename: (NSString*)aFilename;
+-(NSString*)getFilename;
+-(void)setFilename: (NSString*)aFilename;
+-(void)setContent: (NSString*)newContent;
+-(NSString*)getContent;
+-(void)save;
+-(BOOL)hasUnsavedChanges; 
 
 @end

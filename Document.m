@@ -3,34 +3,59 @@
 
 @implementation Document
 
--(id) initWithFilename: (NSString*)aFilename
+-(id)init
 {
 	self = [super init];
-	self->filename = aFilename;
+	self->saved = YES;
+	return self;
+}
+
+-(id)initWithFilename: (NSString*)aFilename
+{
+	self = [super init];
+	filename = aFilename;
+	[filename retain];
+	saved = YES;
+	content = [NSString stringWithContentsOfFile: filename];
+	[content retain];
 	return self;
 }
 
 
--(NSString*) getFileName
+-(NSString*)getFilename
 {
 	return filename;
 }
 
--(void) save
+-(void)setFilename: (NSString*)aFilename
+{
+	[filename release];
+	filename = aFilename;
+	[filename retain];
+}
+
+-(void)save
 {
 	[content writeToFile: filename atomically: true];
+	saved = YES;
 }
 
--(void) setContent: (NSString*)newContent
+-(void)setContent: (NSString*)newContent
 {
 	[newContent retain];
-	[self->content release];
-	self->content = newContent;
+	[content release];
+	content = newContent;
+	saved = NO;
 }
 
--(NSString*) getContent
+-(NSString*)getContent
 {
-	return self->content;
+	return content;
+}
+
+-(BOOL)hasUnsavedChanges
+{
+	return saved == NO;
 }
 
 @end

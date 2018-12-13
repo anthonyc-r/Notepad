@@ -1,0 +1,33 @@
+{
+    "## Comment" = "Do NOT change this file, Gorm maintains it";
+    AppController = {
+	Actions = (
+	);
+	Outlets = (
+	    unsavedChangesPanel
+	);
+	Super = NSObject;
+    };
+    FirstResponder = {
+	Actions = (
+	    "newAction:"
+	);
+	Super = NSObject;
+    };
+    NewClass = {
+	Actions = (
+	);
+	Outlets = (
+	);
+	Super = NSObject;
+    };
+    UnsavedChangesPanel = {
+	Actions = (
+	    "discardChanges:",
+	    "saveChanges:"
+	);
+	Outlets = (
+	);
+	Super = NSPanel;
+    };
+}

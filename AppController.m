@@ -18,52 +18,74 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #import <AppKit/AppKit.h>
 #import "AppController.h"
 #import "Document.h"
+#import "UnsavedChangesPanel.h"
 
 @implementation AppController
 
 
-- (void) awakeFromNib
+-(void)awakeFromNib
 {
 	NSLog(@"Awoke from nib.");
 	[window makeKeyAndOrderFront: self];
 	[window setDelegate: self];
+	activeDocument = [[Document alloc] init];
 }
 
-- (void) windowDidResize: (id*) sender
+-(void)windowDidResize: (id)sender
 {
 	NSLog(@"Resized window");
 }
 
-- (void) windowWillClose: (id*) sender
+-(void) windowWillClose: (id)sender
 {
 	NSLog(@"%@", [activeDocument getContent]);
 	[NSApp terminate: self];
 }
 
-- (void) saveDocument: (id*) sender
+
+// MARK: - First Responder
+-(void)openDocument: (id)sender
 {
-	if (activeDocument != nil)
+	NSLog(@"openDoc");
+	NSLog(@"%d", activeDocument == nil);
+	NSLog(@"Unsaved changes: %d", YES == [activeDocument hasUnsavedChanges]);
+	if ([activeDocument hasUnsavedChanges])
 	{
-		[self saveActiveDocument];
+		NSLog(@"init");
+		[NSBundle loadNibNamed: @"UnsavedChangesPanel" owner: self];
+		[NSApp runModalForWindow: unsavedChangesPanel]; 
+		if ([unsavedChangesPanel shouldSave])
+		{
+			[self saveDocument: self];
+		}
+	}
+	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+	[openPanel runModal];
+	
+	[activeDocument release];
+	activeDocument = [[Document alloc] initWithFilename: [openPanel filename]];
+	[textField setText: [activeDocument getContent]];
+}
+
+-(void) saveDocument: (id)sender
+{
+	if ([activeDocument getFilename])
+	{
+		[activeDocument save];
 		return;
 	}
 	NSLog(@"Did tap save");
 	NSSavePanel* savePanel = [NSSavePanel savePanel];
 	[savePanel runModal];
-	activeDocument = [[Document alloc] initWithFilename: [savePanel filename]];	
-	[activeDocument setContent: [textField text]];
+	[activeDocument setFilename: [savePanel filename]];
 	NSLog(@"Got save file %@", [savePanel filename]);
-	[self saveActiveDocument];
-}
-
-- (void) saveActiveDocument
-{
 	[activeDocument save];	
 }
 
+
 // MARK: - NSTextViewDelegate
 
--(void) textDidChange: (NSNotification*) not
+-(void)textDidChange: (NSNotification*)not
 {
 	NSString* content = [textField text];
 	[activeDocument setContent: content];
