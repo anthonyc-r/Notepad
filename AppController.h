@@ -39,5 +39,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 -(void)openDocument: (id)sender;
 -(void)saveDocument: (id)sender;
 -(void)textDidChange: (NSNotification*) not;
-
+-(void)newDocument: (id)sender;
+-(void)promptSave;
 @end

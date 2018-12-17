@@ -51,13 +51,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 	NSLog(@"Unsaved changes: %d", YES == [activeDocument hasUnsavedChanges]);
 	if ([activeDocument hasUnsavedChanges])
 	{
-		NSLog(@"init");
-		[NSBundle loadNibNamed: @"UnsavedChangesPanel" owner: self];
-		[NSApp runModalForWindow: unsavedChangesPanel]; 
-		if ([unsavedChangesPanel shouldSave])
-		{
-			[self saveDocument: self];
-		}
+		[self promptSave];	
 	}
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
 	[openPanel runModal];
@@ -82,6 +76,27 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 	[activeDocument save];	
 }
 
+-(void)newDocument: (id)sender
+{
+	NSLog(@"New Document");
+	if ([activeDocument hasUnsavedChanges])
+	{
+		[self promptSave];		
+	}
+	activeDocument = [[Document alloc] init];
+	[textField setText: [activeDocument getContent]];
+}
+
+-(void)promptSave
+{
+	NSLog(@"init");
+	[NSBundle loadNibNamed: @"UnsavedChangesPanel" owner: self];
+	[NSApp runModalForWindow: unsavedChangesPanel]; 
+	if ([unsavedChangesPanel shouldSave])
+	{
+		[self saveDocument: self];
+	}
+}
 
 // MARK: - NSTextViewDelegate
 
