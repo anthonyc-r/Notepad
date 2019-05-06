@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #import "AppDelegate.h"
 #import "AppDelegate.h"
 
-int main(int argc, char **argv)
+int main(int argc, const char **argv)
 {
 	NSAutoreleasePool *pool;
 	AppDelegate *delegate;
