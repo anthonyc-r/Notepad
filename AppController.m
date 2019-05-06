@@ -54,11 +54,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 		[self promptSave];	
 	}
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-	[openPanel runModal];
+	[openPanel setCanChooseDirectories: NO];
+	NSInteger selectedButton = [openPanel runModal];
 	
-	[activeDocument release];
-	activeDocument = [[Document alloc] initWithFilename: [openPanel filename]];
-	[textField setText: [activeDocument getContent]];
+	if (selectedButton == NSOKButton)
+	{
+		[activeDocument release];
+		activeDocument = [[Document alloc] initWithFilename: [openPanel filename]];
+		[textField setText: [activeDocument getContent]];
+	}
 }
 
 -(void) saveDocument: (id)sender
