@@ -36,9 +36,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 	NSLog(@"Resized window");
 }
 
--(void) windowWillClose: (id)sender
+-(BOOL)windowShouldClose: (id)sender
 {
-	NSLog(@"%@", [activeDocument getContent]);
+	NSLog(@"windowShouldClose with content; %@", [activeDocument getContent]);
+	[self promptSave];
+	return YES;
+}
+
+-(void)windowWillClose: (id)sender
+{
 	[NSApp terminate: self];
 }
 
@@ -93,7 +99,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 -(void)promptSave
 {
-	NSLog(@"init");
+	NSLog(@"init prompt save");
 	[NSBundle loadNibNamed: @"UnsavedChangesPanel" owner: self];
 	[NSApp runModalForWindow: unsavedChangesPanel]; 
 	if ([unsavedChangesPanel shouldSave])
